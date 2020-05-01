@@ -5,7 +5,8 @@ var config = {
     height: 600,
     scene: {
         preload: preload,
-        create: create
+        create: create,
+	 
     }
 };
 
@@ -16,7 +17,9 @@ function preload ()
     this.load.image('pic', 'assets/backgrounds/taikodrummaster.jpg');
     this.load.image('mask', 'assets/sprites/ultrasound_beam.png');
     this.load.image('probe', 'assets/sprites/probe.png');
-    this.load.image('speckle', 'assets/sprites/speckle.png');
+    this.load.spritesheet('speckle',
+                'assets/sprites/speckle.png',
+                { frameWidth: 80, frameHeight: 101 });
     this.load.image('logo', 'assets/sprites/phaser.png');
 }
 
@@ -47,6 +50,13 @@ function create ()
     });
 
 
+    this.anims.create({
+        key: 'speckle_cycle',
+        frames: this.anims.generateFrameNumbers('speckle', { start: 0, end: 9 }),
+        frameRate: 10,
+        repeat: -1
+    });
+
     pic.mask = new Phaser.Display.Masks.BitmapMask(this, spotlight);
 
     this.input.on('pointermove', function (pointer) {
@@ -57,7 +67,8 @@ function create ()
         probe.y = pointer.y;
         speckle.x = pointer.x;
         speckle.y = pointer.y;
-	
+	speckle.anims.play('speckle_cycle', true)
 
     });
 }
+
